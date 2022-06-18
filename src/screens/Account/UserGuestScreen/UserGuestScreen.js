@@ -23,7 +23,7 @@ export function UserGuestScreen() {
                 </Text>
                 <View>
                     <TouchableOpacity style={styles.btn} onPress={goToLogin}>
-                        <Text style={styles.textBtn}>Ir al Perfil</Text>
+                        <Text style={styles.textBtn}>Iniciar sesion</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

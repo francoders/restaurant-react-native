@@ -1,3 +1,3 @@
-export * from './screenName';
-export * from './colors';
-export * from './firebase'
+export * from "./screenName";
+export * from "./colors";
+export * from "./firebase";
