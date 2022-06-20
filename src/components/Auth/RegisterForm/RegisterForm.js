@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, Icon, Button } from "@rneui/base";
 import { colors } from "../../../utils/colors";
+import { useFormik } from "formik";
+import { initialValues, validationSchema } from "./RegisterForm.data";
 
 export function RegisterForm() {
+	const [showPassword, setShowPassword] = useState(false);
+	const [showRepeatPassword, setRepeatShowPassword] = useState(false);
+
+	const formik = useFormik({
+		initialValues: initialValues(),
+		validationSchema: validationSchema(),
+		validateOnChange: false,
+		onSubmit: (formValue) => {
+			console.log("Formulario enviado");
+			console.log(formValue);
+		},
+	});
+
+	//Validacion del ojo
+	const showHidenPassword = () => {
+		setShowPassword((prevState) => !prevState);
+	};
+	const showHidenRepeatPassword = () => {
+		setRepeatShowPassword((prevState) => !prevState);
+	};
+
 	return (
 		<View style={styles.content}>
 			<Input
@@ -17,40 +40,49 @@ export function RegisterForm() {
 						color="gray"
 					/>
 				}
+				onChangeText={(text) => formik.setFieldValue("email", text)}
+				errorMessage={formik.errors.email}
 			/>
 
 			<Input
 				placeholder="Contraseña"
 				containerStyle={styles.input}
-				secureTextEntry={true}
+				secureTextEntry={showPassword ? false : true}
 				rightIcon={
 					<Icon
 						type="material-community"
-						name="eye"
+						name={showPassword ? "eye-off" : "eye"}
 						style={styles.icon}
 						color="gray"
+						onPress={showHidenPassword}
 					/>
 				}
+				onChangeText={(text) => formik.setFieldValue("password", text)}
+				errorMessage={formik.errors.password}
 			/>
 
 			<Input
 				placeholder="Repetir contraseña"
 				containerStyle={styles.input}
-				secureTextEntry={true}
+				secureTextEntry={showRepeatPassword ? false : true}
 				rightIcon={
 					<Icon
 						type="material-community"
-						name="eye"
+						name={showRepeatPassword ? "eye-off" : "eye"}
 						style={styles.icon}
 						color="gray"
+						onPress={showHidenRepeatPassword}
 					/>
 				}
+				onChangeText={(text) => formik.setFieldValue("repeatPassword", text)}
+				errorMessage={formik.errors.repeatPassword}
 			/>
 
 			<Button
 				title="Registrarme"
 				containerStyle={styles.btnContainer}
 				buttonStyle={styles.btn}
+				onPress={formik.handleSubmit}
 			/>
 		</View>
 	);
@@ -66,7 +98,7 @@ const styles = StyleSheet.create({
 
 	input: {
 		width: "100%",
-		marginTop: 20
+		marginTop: 20,
 	},
 
 	btnContainer: {
